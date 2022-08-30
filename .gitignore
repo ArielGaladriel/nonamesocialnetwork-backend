@@ -1,0 +1,16 @@
+.idea
+idea
+*.pyc
+*~
+__pycache__
+myvenv
+db.sqlite3
+/static
+.DS_Store
+/config/__pycache__
+/src/followers/__pycache__
+/src/followers/migrations
+/src/usersprofile/__pycache__
+/src/usersprofile/migrations
+/src/posts/__pycache__
+/src/posts/migrations
