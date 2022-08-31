@@ -21,7 +21,7 @@ class UsersBio(models.Model):
         ('other', 'Other')
     )
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bio')
+    user = models.OneToOneField(UsersProfile, on_delete=models.CASCADE, related_name='bio')
     gender = models.CharField(max_length=20, choices=GENDER, default='unknown')
     phone = models.CharField(max_length=14, blank=True)
     web_link = models.CharField(max_length=100, blank=True)
