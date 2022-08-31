@@ -7,10 +7,7 @@ from .serializers import BioSerializer, ProfileSerializer
 class UsersProfileView(ModelViewSet):
     """
     """
-    serializer_class = BioSerializer
+    serializer_class = ProfileSerializer
 
     def get_queryset(self):
-        return UsersBio.objects.filter(user=1)
-
-
-'''return UsersBio.objects.filter(user_id=int(self.kwargs.get("pk")))'''
+        return UsersProfile.objects.filter(id=self.kwargs.get("pk"))
