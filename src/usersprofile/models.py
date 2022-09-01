@@ -26,4 +26,4 @@ class UsersBio(models.Model):
     phone = models.CharField(max_length=14, blank=True)
     web_link = models.CharField(max_length=100, blank=True)
     about = models.CharField(max_length=100, blank=True)
-    avatar = models.ImageField(blank=True)
+    avatar = models.ImageField(blank=True, null=True)

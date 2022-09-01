@@ -7,7 +7,15 @@ class BioSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = UsersBio
-        fields = '__all__'
+        exclude = ['id','user']
+
+
+class SettingsSerializer(serializers.ModelSerializer):
+    """
+    """
+    class Meta:
+        model = UsersProfile
+        fields = ['first_name','last_name','email','birthday','password']
 
 
 class ProfileSerializer(serializers.ModelSerializer):
