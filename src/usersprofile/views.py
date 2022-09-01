@@ -5,6 +5,8 @@ from rest_framework.viewsets import ModelViewSet
 from .models import UsersProfile, UsersBio
 from .serializers import ProfileSerializer, SettingsSerializer, BioSerializer
 
+from ..settings.permissions import IsUsersProfile, IsUsersBio
+
 
 class UsersProfileView(ModelViewSet):
     """
@@ -21,6 +23,7 @@ class UserSettingsView(ModelViewSet):
     queryset = UsersProfile
     serializer_class = SettingsSerializer
     permission_classes = [permissions.IsAuthenticated]
+    permission_classes_by_action = {'get': [IsUsersProfile], 'update': [IsUsersProfile]}
 
 
 class BioSettingsView(ModelViewSet):
@@ -28,6 +31,7 @@ class BioSettingsView(ModelViewSet):
     """
     serializer_class = BioSerializer
     permission_classes = [permissions.IsAuthenticated]
+    permission_classes_by_action = {'get': [IsUsersBio], 'update': [IsUsersBio]}
 
     def get_object(self):
         queryset = UsersBio
