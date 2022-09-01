@@ -1,9 +1,9 @@
-from rest_framework import permissions
+from rest_framework import permissions, generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 
 from .models import UsersProfile, UsersBio
-from .serializers import ProfileSerializer, SettingsSerializer, BioSerializer
+from .serializers import ProfileSerializer, SettingsSerializer, BioSerializer, ProfileCreationSerializer
 
 from ..settings.permissions import IsUsersProfile, IsUsersBio
 
@@ -37,3 +37,9 @@ class BioSettingsView(ModelViewSet):
         queryset = UsersBio
         obj = get_object_or_404(queryset, user=self.kwargs.get("pk"))
         return obj
+
+
+class CreateUserView(generics.CreateAPIView):
+    queryset = UsersProfile.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = ProfileCreationSerializer
