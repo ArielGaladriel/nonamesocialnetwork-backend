@@ -5,6 +5,8 @@ from src.usersprofile import views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    path('api-auth/login/', views.MyLoginView.as_view(template_name='rest_framework/login.html'), name='login'),
+
     path('api-auth/', include('rest_framework.urls')),
 
     path('usersprofile/', include('src.usersprofile.urls')),

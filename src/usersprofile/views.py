@@ -1,6 +1,9 @@
-from rest_framework import permissions, generics
+from django.contrib.auth.views import LoginView
+from rest_framework import permissions, generics, urls
 from rest_framework.generics import get_object_or_404
+from rest_framework.reverse import reverse
 from rest_framework.viewsets import ModelViewSet
+
 
 from .models import UsersProfile, UsersBio
 from .serializers import ProfileSerializer, SettingsSerializer, BioSerializer, ProfileCreationSerializer
@@ -43,3 +46,10 @@ class CreateUserView(generics.CreateAPIView):
     queryset = UsersProfile.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class = ProfileCreationSerializer
+
+
+class MyLoginView(LoginView):
+
+    def get_success_url(self):
+        pk = self.request.user.id
+        return reverse('my_account', args=[pk])
