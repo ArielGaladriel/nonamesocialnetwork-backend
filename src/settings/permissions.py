@@ -1,4 +1,3 @@
-from rest_framework import permissions, urls
 from rest_framework.permissions import BasePermission
 
 
@@ -15,4 +14,4 @@ class IsUsersBio(BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        return obj.user == request.user.id
+        return obj.user.id == request.user.id  # field "user" of UsersBio refers to an instance of UsersProfile
