@@ -7,7 +7,7 @@ class PostSerializer(serializers.ModelSerializer):
     '''
     '''
 
-    user = serializers.ReadOnlyField(source='user.id')
+    user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = UsersPost
@@ -21,4 +21,4 @@ class PostsListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UsersPost
-        fields = ['user', 'label', 'text', 'creation_date']
+        fields = ['id','user', 'label', 'text', 'creation_date']
