@@ -3,7 +3,7 @@ from rest_framework import permissions, generics
 from .serializers import PostSerializer, PostsListSerializer
 from .models import UsersPost
 from ..settings.classes import CreateRetrieveUpdateDestroy
-from ..settings.permissions import IsUserAuthor
+from ..settings.permissions import IsUserAuthor, IsUserCreator
 
 
 class PostView(CreateRetrieveUpdateDestroy):
@@ -11,7 +11,7 @@ class PostView(CreateRetrieveUpdateDestroy):
     """
     queryset = UsersPost.objects.all().select_related('user')
     serializer_class = PostSerializer
-    permission_classes_by_action = {'create': [permissions.IsAuthenticated], 'retrieve': [permissions.AllowAny],
+    permission_classes_by_action = {'create': [IsUserCreator], 'retrieve': [permissions.AllowAny],
                                     'update': [IsUserAuthor],
                                     'destroy': [IsUserAuthor]}
 

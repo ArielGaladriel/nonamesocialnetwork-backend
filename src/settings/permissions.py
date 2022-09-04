@@ -22,5 +22,13 @@ class IsUserAuthor(BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
+        view.kwargs.get('pk')
         return obj.user == request.user
 
+
+class IsUserCreator(BasePermission):
+    """
+    """
+
+    def has_permission(self, request, view):
+        return view.kwargs.get('pk') == request.user.id

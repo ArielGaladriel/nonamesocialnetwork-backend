@@ -7,4 +7,5 @@ urlpatterns = [
     path('<int:pk>/settings/', views.UserSettingsView.as_view({'get': 'retrieve', 'patch': 'partial_update'})),
     path('<int:pk>/bio/', views.BioSettingsView.as_view({'get': 'retrieve', 'patch': 'partial_update'})),
     path('<int:pk>/posts/', include('src.posts.urls')),
+    path('<int:pk>/followers/', include('src.followers.urls')),
 ]
