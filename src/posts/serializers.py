@@ -4,8 +4,8 @@ from .models import UsersPost
 
 
 class PostSerializer(serializers.ModelSerializer):
-    '''
-    '''
+    """
+    """
 
     user = serializers.ReadOnlyField(source='user.username')
 
@@ -15,7 +15,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class PostsListSerializer(serializers.ModelSerializer):
-    """
+    """Looks exactly as PostSerializer, but I guess I'll change smth here in the future
     """
     user = serializers.ReadOnlyField(source='user.username')
 

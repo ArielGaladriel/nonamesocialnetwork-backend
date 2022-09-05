@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from .models import UsersProfile, UsersBio
 from django.contrib.auth.password_validation import validate_password
+
+from .models import UsersProfile, UsersBio
+from ..posts.serializers import PostsListSerializer
 
 
 class BioSerializer(serializers.ModelSerializer):
@@ -24,10 +26,11 @@ class ProfileSerializer(serializers.ModelSerializer):
     """
     """
     bio = BioSerializer()
+    posts = PostsListSerializer(many=True)
 
     class Meta:
         model = UsersProfile
-        fields = ['id','first_name','last_name','birthday','bio']
+        fields = ['id','first_name','last_name','birthday','bio', 'posts']
         depth = 1
 
 
