@@ -17,19 +17,21 @@ class FollowersListView(generics.ListAPIView):
 class AddFollowerView(views.APIView):
     """
     """
+    lookup_field = 'pk2'
     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request, pk):
+    def get(self, request, pk, pk2):
         try:
-            user = UsersProfile.objects.get(id=pk)
+            user = UsersProfile.objects.get(id=pk2)
         except Follower.DoesNotExist:
             return response.Response(status=404)
-        Follower.objects.create(subscriber=request.user, user=user)
+        if not Follower.objects.filter(subscriber=request.user, user=user).exists() and request.user.id != pk2:
+            Follower.objects.create(subscriber=request.user, user=user)
         return response.Response(status=201)
 
-    def delete(self, request, pk):
+    def delete(self, request, pk, pk2):
         try:
-            sub = Follower.objects.get(subscriber=request.user, user_id=pk)
+            sub = Follower.objects.get(subscriber=request.user, user=pk2)
         except Follower.DoesNotExist:
             return response.Response(status=404)
         sub.delete()
