@@ -6,10 +6,11 @@ from ..usersprofile.models import UsersProfile
 class UsersNameSerializer(serializers.ModelSerializer):
     """
     """
+    gender = serializers.ReadOnlyField(source='bio.gender')  # switch to 'bio.avatar' later
 
     class Meta:
         model = UsersProfile
-        fields = ['id','username']
+        fields = ['username','gender']
 
 
 class FollowersListSerializer(serializers.ModelSerializer):

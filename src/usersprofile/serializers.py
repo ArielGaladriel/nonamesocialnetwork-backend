@@ -23,7 +23,7 @@ class SettingsSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     """
     """
-    bio = BioSerializer
+    bio = BioSerializer()
 
     class Meta:
         model = UsersProfile
