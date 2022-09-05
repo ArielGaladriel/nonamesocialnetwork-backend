@@ -1,4 +1,5 @@
 from rest_framework import permissions, generics
+from django.shortcuts import get_object_or_404
 
 from .serializers import PostSerializer, PostsListSerializer
 from .models import UsersPost
@@ -17,6 +18,18 @@ class PostView(CreateRetrieveUpdateDestroy):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        if self.request.method == 'POST':
+            filter_kwargs = {self.lookup_field: self.kwargs['pk']}
+        else:
+            filter_kwargs = {self.lookup_field: self.kwargs['pk3']}
+        obj = get_object_or_404(queryset, **filter_kwargs)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
 
 
 class PostsListView(generics.ListAPIView):
