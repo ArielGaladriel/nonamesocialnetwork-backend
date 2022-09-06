@@ -30,11 +30,9 @@ class PostView(CreateRetrieveUpdateDestroy):
         return obj
 
 
-
-
 class PostsListView(generics.ListAPIView):
-    '''
-    '''
+    """
+    """
     queryset = UsersPost
     serializer_class = PostsListSerializer
 
