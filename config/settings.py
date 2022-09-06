@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'djoser',
+    'drf_yasg',
 
     'src.usersprofile',
     'src.followers',
