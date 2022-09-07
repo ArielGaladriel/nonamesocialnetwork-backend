@@ -148,8 +148,8 @@ REST_FRAMEWORK = {
 }
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'arielbagdasaryan@gmail.com'
-EMAIL_HOST_PASSWORD = 'zrifynlyfwpnhvhu'
+EMAIL_HOST_USER = 'your@gmail.com'
+EMAIL_HOST_PASSWORD = '*********'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 

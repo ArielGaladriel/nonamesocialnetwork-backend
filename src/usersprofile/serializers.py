@@ -61,5 +61,6 @@ class ProfileCreationSerializer(serializers.ModelSerializer):
             is_active=False
         )
         user.set_password(validated_data['password'])
+        user.save()
         UsersBio.objects.create(user_id=user.id) # "user_id" - description of relation between two tables
         return user
