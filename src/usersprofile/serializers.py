@@ -57,9 +57,9 @@ class ProfileCreationSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
-            birthday=validated_data['birthday']
+            birthday=validated_data['birthday'],
+            is_active=False
         )
         user.set_password(validated_data['password'])
-        user.save()
         UsersBio.objects.create(user_id=user.id) # "user_id" - description of relation between two tables
         return user

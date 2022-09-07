@@ -147,11 +147,17 @@ REST_FRAMEWORK = {
     ]
 }
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'arielbagdasaryan@gmail.com'
+EMAIL_HOST_PASSWORD = 'zrifynlyfwpnhvhu'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': '#/activate/{uid}/{token}',
-    'SEND_ACTIVATION_EMAIL': False,
+    'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {},
 }
 

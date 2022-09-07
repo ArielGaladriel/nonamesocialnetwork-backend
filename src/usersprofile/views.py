@@ -4,6 +4,9 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.reverse import reverse
 from rest_framework.viewsets import ModelViewSet
 
+from djoser import signals
+from djoser.compat import get_user_email
+from djoser.conf import settings
 
 from .models import UsersProfile, UsersBio
 from .serializers import ProfileSerializer, SettingsSerializer, BioSerializer, ProfileCreationSerializer
@@ -47,6 +50,13 @@ class CreateUserView(generics.CreateAPIView):
     queryset = UsersProfile.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class = ProfileCreationSerializer
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+        signals.user_registered.send(sender=self.__class__, user=user, request=self.request)
+        context = {"user": user}
+        to = [get_user_email(user)]
+        settings.EMAIL.activation(self.request, context).send(to)
 
 
 class MyLoginView(LoginView):
