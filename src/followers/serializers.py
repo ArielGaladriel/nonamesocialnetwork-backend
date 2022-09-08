@@ -5,6 +5,7 @@ from ..usersprofile.models import UsersProfile
 
 class UsersNameSerializer(serializers.ModelSerializer):
     """
+    Username and avatar of follower, that will be displayed in "followers list" page
     """
     gender = serializers.ReadOnlyField(source='bio.gender')  # switch to 'bio.avatar' later
 
@@ -15,6 +16,7 @@ class UsersNameSerializer(serializers.ModelSerializer):
 
 class FollowersListSerializer(serializers.ModelSerializer):
     """
+    List of user's followers
     """
     subscriber = UsersNameSerializer()
 

@@ -16,6 +16,7 @@ from ..settings.permissions import IsUsersProfile, IsUsersBio
 
 class UsersProfileView(ModelViewSet):
     """
+    View all public information about user + it's posts
     """
     serializer_class = ProfileSerializer
 
@@ -25,6 +26,7 @@ class UsersProfileView(ModelViewSet):
 
 class UserSettingsView(ModelViewSet):
     """
+    View or change main information about a user (for owner only)
     """
     queryset = UsersProfile
     serializer_class = SettingsSerializer
@@ -33,6 +35,7 @@ class UserSettingsView(ModelViewSet):
 
 class BioSettingsView(ModelViewSet):
     """
+    View or change additional information about a user (for owner only)
     """
     serializer_class = BioSerializer
     permission_classes = [IsUsersBio]
@@ -46,6 +49,7 @@ class BioSettingsView(ModelViewSet):
 
 class CreateUserView(generics.CreateAPIView):
     """
+    Creation of a user + sending verification link on user's email
     """
     queryset = UsersProfile.objects.all()
     permission_classes = [permissions.AllowAny]
@@ -61,6 +65,7 @@ class CreateUserView(generics.CreateAPIView):
 
 class MyLoginView(LoginView):
     """
+    Login + redirect on user's page
     """
 
     def get_success_url(self):

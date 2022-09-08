@@ -6,6 +6,7 @@ from .serializers import FollowersListSerializer
 
 class FollowersListView(generics.ListAPIView):
     """
+    List of user's subscribers
     """
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = FollowersListSerializer
@@ -16,6 +17,7 @@ class FollowersListView(generics.ListAPIView):
 
 class AddFollowerView(views.APIView):
     """
+    Follow/unfollow a user
     """
     lookup_field = 'pk2'
     permission_classes = [permissions.IsAuthenticated]

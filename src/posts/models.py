@@ -3,7 +3,8 @@ from django.conf import settings
 
 
 class UsersPost(models.Model):
-    """Model for user's posts
+    """
+    Model for user's posts
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts')
     label = models.CharField(max_length=30)

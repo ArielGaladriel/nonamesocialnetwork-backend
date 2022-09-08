@@ -8,7 +8,8 @@ from ..settings.permissions import IsUserAuthor, IsUserCreator
 
 
 class PostView(CreateRetrieveUpdateDestroy):
-    """ CRUD
+    """
+    CRUD for a user's post
     """
     queryset = UsersPost.objects.all().select_related('user')
     serializer_class = PostSerializer
@@ -32,6 +33,7 @@ class PostView(CreateRetrieveUpdateDestroy):
 
 class PostsListView(generics.ListAPIView):
     """
+    View all user's posts
     """
     queryset = UsersPost
     serializer_class = PostsListSerializer

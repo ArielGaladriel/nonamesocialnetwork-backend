@@ -7,7 +7,8 @@ from ..posts.serializers import PostsListSerializer
 
 
 class BioSerializer(serializers.ModelSerializer):
-    """Public information about user
+    """
+    Additional information about user
     """
     class Meta:
         model = UsersBio
@@ -16,6 +17,7 @@ class BioSerializer(serializers.ModelSerializer):
 
 class SettingsSerializer(serializers.ModelSerializer):
     """
+    User's information from UsersProfile model
     """
     class Meta:
         model = UsersProfile
@@ -24,6 +26,7 @@ class SettingsSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     """
+    All information about user + it's posts
     """
     bio = BioSerializer()
     posts = PostsListSerializer(many=True)
@@ -36,6 +39,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class ProfileCreationSerializer(serializers.ModelSerializer):
     """
+    Create user + create an instance of user's bio table
     """
     email = serializers.EmailField(required=True,validators=[UniqueValidator(queryset=UsersProfile.objects.all())])
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
