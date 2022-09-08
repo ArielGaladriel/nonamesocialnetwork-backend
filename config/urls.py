@@ -13,6 +13,8 @@ urlpatterns = [
     path('auth/users/', CreateUserView.as_view()),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
+    path('api/auth/social/', include('djoser.social.urls')),
+
 
     path('api/usersprofile/', include('src.usersprofile.urls')),
 ]

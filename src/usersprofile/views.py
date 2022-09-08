@@ -52,7 +52,7 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = ProfileCreationSerializer
 
     def perform_create(self, serializer):
-        user = serializer.save()
+        user = serializer.save() # need to fix this double saving (first was in ProfileCreationSerializer's create())
         signals.user_registered.send(sender=self.__class__, user=user, request=self.request)
         context = {"user": user}
         to = [get_user_email(user)]
