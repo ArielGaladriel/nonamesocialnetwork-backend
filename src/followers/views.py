@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions, views, response
 from src.usersprofile.models import UsersProfile
 from .models import Follower
-from .serializers import FollowersListSerializer
+from .serializers import FollowersListSerializer, FolloweeListSerializer
 
 
 class FollowersListView(generics.ListAPIView):
@@ -15,7 +15,17 @@ class FollowersListView(generics.ListAPIView):
         return Follower.objects.filter(user=self.kwargs['pk'])
 
 
-class AddFollowerView(views.APIView):
+class FolloweeListView(generics.ListAPIView):
+    """
+    List of user's followee
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = FolloweeListSerializer
+
+    def get_queryset(self):
+        return Follower.objects.filter(subscriber=self.kwargs['pk'])
+
+class AddDeleteFollowerView(views.APIView):
     """
     Follow/unfollow a user
     """
@@ -44,3 +54,21 @@ class AddFollowerView(views.APIView):
         else:
             return response.Response(status=403)
 
+
+class DeleteFolloweeView(views.APIView):
+    """
+    Delete a user's subscriber
+    """
+    lookup_field = 'pk2'
+    permission_classes = [permissions.IsAuthenticated]
+
+    def delete(self, request, pk, pk2):
+        try:
+            sub = Follower.objects.get(user=request.user, subscriber=pk2)
+        except Follower.DoesNotExist:
+            return response.Response(status=404)
+        if pk == request.user.id:
+            sub.delete()
+            return response.Response(status=204)
+        else:
+            return response.Response(status=403)

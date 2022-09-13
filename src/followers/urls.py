@@ -3,6 +3,8 @@ from . import views
 
 
 urlpatterns = [
-    path('<int:pk2>/', views.AddFollowerView.as_view()),
-    path('', views.FollowersListView.as_view())
+    path('followers/<int:pk2>/', views.AddDeleteFollowerView.as_view()),
+    path('followers/', views.FollowersListView.as_view()),
+    path('followee/', views.FolloweeListView.as_view()),
+    path('followee/<int:pk2>/', views.DeleteFolloweeView.as_view())
 ]

@@ -23,3 +23,14 @@ class FollowersListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follower
         fields = ['subscriber']
+
+
+class FolloweeListSerializer(serializers.ModelSerializer):
+    """
+    List of user's followee
+    """
+    user = UsersNameSerializer()
+
+    class Meta:
+        model = Follower
+        fields = ['user']
