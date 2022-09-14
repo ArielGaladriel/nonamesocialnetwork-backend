@@ -6,8 +6,15 @@ from django.db import models
 class UsersProfile(AbstractUser):
     """ Custom user model
     """
+    PRIVACY = (
+        ('public', 'public'),
+        ('followers only', 'followers only'),
+        ('private', 'private')
+    )
+
     first_login = models.DateTimeField(blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
+    privacy = models.CharField(max_length=20, choices=PRIVACY, default='public')
 
 
 class UsersBio(models.Model):

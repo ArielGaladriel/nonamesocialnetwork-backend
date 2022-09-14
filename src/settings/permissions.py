@@ -1,5 +1,7 @@
 from rest_framework.permissions import BasePermission
 
+from src.followers.models import Follower
+
 
 class IsUsersProfile(BasePermission):
     """
@@ -36,3 +38,20 @@ class IsUserCreator(BasePermission):
 
     def has_permission(self, request, view):
         return view.kwargs.get('pk') == request.user.id
+
+
+class ProfilePrivacy(BasePermission):
+    """
+    Permission that depends on privacy settings of a user's profile
+    """
+
+    def has_object_permission(self, request, view, obj):
+        if obj.privacy == 'public':
+            return True
+        elif obj.privacy == 'private' and obj.username == request.user:
+            return True
+        elif obj.privacy == 'followers only' and Follower.objects.filter(
+                user=obj.id, subscriber=request.user.id, status='confirmed'):
+            return True
+        else:
+            return False

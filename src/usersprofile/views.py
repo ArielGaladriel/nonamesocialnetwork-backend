@@ -11,7 +11,7 @@ from djoser.conf import settings
 from .models import UsersProfile, UsersBio
 from .serializers import ProfileSerializer, SettingsSerializer, BioSerializer, ProfileCreationSerializer
 
-from ..settings.permissions import IsUsersProfile, IsUsersBio
+from ..settings.permissions import IsUsersProfile, IsUsersBio, ProfilePrivacy
 
 
 class UsersProfileView(ModelViewSet):
@@ -19,6 +19,7 @@ class UsersProfileView(ModelViewSet):
     View all public information about user + it's posts
     """
     serializer_class = ProfileSerializer
+    permission_classes = [ProfilePrivacy]
 
     def get_queryset(self):
         return UsersProfile.objects.filter(id=self.kwargs.get("pk"))

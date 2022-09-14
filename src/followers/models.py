@@ -6,6 +6,11 @@ class Follower(models.Model):
     """
     Relation between owner and subscribers
     """
+    STATUS = (
+        ('requested', 'requested'),
+        ('confirmed', 'confirmed')
+    )
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='owner')
     subscriber = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscribers')
-    allowed_permissions = models.CharField(max_length=20, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS)

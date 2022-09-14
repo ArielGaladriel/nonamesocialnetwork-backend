@@ -12,7 +12,18 @@ class FollowersListView(generics.ListAPIView):
     serializer_class = FollowersListSerializer
 
     def get_queryset(self):
-        return Follower.objects.filter(user=self.kwargs['pk'])
+        return Follower.objects.filter(user=self.kwargs['pk'], status='confirmed')
+
+
+class FollowersRequestsListView(generics.ListAPIView):
+    """
+    List of users who wants to subscribe
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = FollowersListSerializer
+
+    def get_queryset(self):
+        return Follower.objects.filter(user=self.kwargs['pk'], status='requested')
 
 
 class FolloweeListView(generics.ListAPIView):
@@ -23,7 +34,19 @@ class FolloweeListView(generics.ListAPIView):
     serializer_class = FolloweeListSerializer
 
     def get_queryset(self):
-        return Follower.objects.filter(subscriber=self.kwargs['pk'])
+        return Follower.objects.filter(subscriber=self.kwargs['pk'], status='confirmed')
+
+
+class FolloweeRequestsListView(generics.ListAPIView):
+    """
+    List of user's requested subscriptions
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = FolloweeListSerializer
+
+    def get_queryset(self):
+        return Follower.objects.filter(subscriber=self.kwargs['pk'], status='requested')
+
 
 class AddDeleteFollowerView(views.APIView):
     """
@@ -38,7 +61,10 @@ class AddDeleteFollowerView(views.APIView):
         except Follower.DoesNotExist:
             return response.Response(status=404)
         if not Follower.objects.filter(subscriber=request.user, user=user).exists() and request.user.id != pk2 and pk == request.user.id:
-            Follower.objects.create(subscriber=request.user, user=user)
+            if user.privacy == 'public':
+                Follower.objects.create(subscriber=request.user, user=user, status='confirmed')
+            else:
+                Follower.objects.create(subscriber=request.user, user=user, status='requested')
             return response.Response(status=201)
         else:
             return response.Response(status=403)
@@ -55,12 +81,24 @@ class AddDeleteFollowerView(views.APIView):
             return response.Response(status=403)
 
 
-class DeleteFolloweeView(views.APIView):
+class UpdateDeleteFolloweeView(views.APIView):
     """
     Delete a user's subscriber
     """
     lookup_field = 'pk2'
     permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk, pk2):
+        try:
+            sub = Follower.objects.get(user=request.user, subscriber=pk2, status='requested')
+        except Follower.DoesNotExist:
+            return response.Response(status=404)
+        if pk == request.user.id:
+            sub.status = 'confirmed'
+            sub.save()
+            return response.Response(status=204)
+        else:
+            return response.Response(status=403)
 
     def delete(self, request, pk, pk2):
         try:
