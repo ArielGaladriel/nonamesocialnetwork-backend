@@ -56,3 +56,20 @@ class ProfilePrivacy(BasePermission):
             return True
         else:
             return False
+
+
+class PostPrivacy(BasePermission):
+    """
+    Permission that depends on privacy settings of a user's post
+    """
+
+    def has_object_permission(self, request, view, obj):
+        if obj.privacy == 'public':
+            return True
+        elif obj.privacy == 'private' and obj.user == request.user:
+            return True
+        elif obj.privacy == 'followers only' and (obj.user == request.user or Follower.objects.filter(
+                user=obj.user.id, subscriber=request.user.id, status='confirmed')):
+            return True
+        else:
+            return False
