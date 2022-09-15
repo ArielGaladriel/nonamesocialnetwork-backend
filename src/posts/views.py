@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from .serializers import PostSerializer, PostsListSerializer
 from .models import UsersPost
 from ..settings.classes import CreateRetrieveUpdateDestroy
-from ..settings.permissions import IsUserAuthor, IsUserCreator
+from ..settings.permissions import IsUserAuthor, OwnerUserOnly
 
 
 class PostView(CreateRetrieveUpdateDestroy):
@@ -13,7 +13,7 @@ class PostView(CreateRetrieveUpdateDestroy):
     """
     queryset = UsersPost.objects.all().select_related('user')
     serializer_class = PostSerializer
-    permission_classes_by_action = {'create': [IsUserCreator], 'retrieve': [permissions.AllowAny],
+    permission_classes_by_action = {'create': [OwnerUserOnly], 'retrieve': [permissions.AllowAny],
                                     'update': [IsUserAuthor],
                                     'destroy': [IsUserAuthor]}
 

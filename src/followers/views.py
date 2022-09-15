@@ -2,6 +2,7 @@ from rest_framework import generics, permissions, views, response
 from src.usersprofile.models import UsersProfile
 from .models import Follower
 from .serializers import FollowersListSerializer, FolloweeListSerializer
+from ..settings.permissions import OwnerUserOnly
 
 
 class FollowersListView(generics.ListAPIView):
@@ -19,7 +20,7 @@ class FollowersRequestsListView(generics.ListAPIView):
     """
     List of users who wants to subscribe
     """
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [OwnerUserOnly]
     serializer_class = FollowersListSerializer
 
     def get_queryset(self):
@@ -41,7 +42,7 @@ class FolloweeRequestsListView(generics.ListAPIView):
     """
     List of user's requested subscriptions
     """
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [OwnerUserOnly]
     serializer_class = FolloweeListSerializer
 
     def get_queryset(self):

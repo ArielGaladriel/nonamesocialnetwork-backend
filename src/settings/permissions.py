@@ -30,10 +30,11 @@ class IsUserAuthor(BasePermission):
         return obj.user == request.user and view.kwargs.get('pk') == request.user.id
 
 
-class IsUserCreator(BasePermission):
+class OwnerUserOnly(BasePermission):
     """
-    Weird permission. Will be deleted.
+    Weird permission.
     Just to ensure that creation of a post is available from url were pk = user.id only
+    UPD: also provides access for owner user only
     """
 
     def has_permission(self, request, view):
