@@ -1,8 +1,10 @@
 from rest_framework import permissions, generics
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from .serializers import PostSerializer, PostsListSerializer
 from .models import UsersPost
+from ..followers.models import Follower
 from ..settings.classes import CreateRetrieveUpdateDestroy
 from ..settings.permissions import IsUserAuthor, OwnerUserOnly, PostPrivacy
 
@@ -37,7 +39,13 @@ class PostsListView(generics.ListAPIView):
     """
     queryset = UsersPost
     serializer_class = PostsListSerializer
-    permission_classes = [PostPrivacy]  # need to rewrite for this case, not working right now
 
     def get_queryset(self):
-        return UsersPost.objects.filter(user_id=self.kwargs.get('pk'))
+        if self.kwargs.get('pk') == self.request.user.id:
+            return UsersPost.objects.filter(user_id=self.kwargs.get('pk'))
+        elif Follower.objects.filter(
+                user=self.kwargs.get('pk'), subscriber=self.request.user.id, status='confirmed'):
+            return UsersPost.objects.filter(Q(user_id=self.kwargs.get('pk')), (Q(privacy='public') |
+                                                                               Q(privacy='followers only')))
+        else:
+            return UsersPost.objects.filter(user_id=self.kwargs.get('pk'), privacy='public')
