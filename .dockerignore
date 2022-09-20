@@ -15,4 +15,3 @@ db.sqlite3
 /src/posts/__pycache__
 /src/posts/migrations
 /src/settings/__pycache__
-.env.dev

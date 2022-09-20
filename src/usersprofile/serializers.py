@@ -3,25 +3,27 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
 from .models import UsersProfile, UsersBio
-from ..posts.serializers import PostsListSerializer
+# from ..posts.serializers import PostsListSerializer  # for ProfileSerializer if needed
 
 
 class BioSerializer(serializers.ModelSerializer):
     """
     Additional information about user
     """
+
     class Meta:
         model = UsersBio
-        exclude = ['id','user']
+        exclude = ['id', 'user']
 
 
 class SettingsSerializer(serializers.ModelSerializer):
     """
     User's information from UsersProfile model
     """
+
     class Meta:
         model = UsersProfile
-        fields = ['first_name','last_name','email','birthday','password', 'privacy']
+        fields = ['first_name', 'last_name', 'email', 'birthday', 'password', 'privacy']
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -29,11 +31,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     All information about user + it's posts
     """
     bio = BioSerializer()
-    posts = PostsListSerializer(many=True)
+
+    # posts = PostsListSerializer(many=True)  # for debugging (post's permissions not included), will remove later
 
     class Meta:
         model = UsersProfile
-        fields = ['id','first_name','last_name','birthday','bio', 'posts']
+        fields = ['id', 'first_name', 'last_name', 'birthday', 'bio']  # add 'posts' if needed
         depth = 1
 
 
@@ -41,13 +44,13 @@ class ProfileCreationSerializer(serializers.ModelSerializer):
     """
     Create user + create an instance of user's bio table
     """
-    email = serializers.EmailField(required=True,validators=[UniqueValidator(queryset=UsersProfile.objects.all())])
+    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=UsersProfile.objects.all())])
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = UsersProfile
-        fields = ['username', 'password', 'password2', 'email', 'first_name', 'last_name','birthday']
+        fields = ['username', 'password', 'password2', 'email', 'first_name', 'last_name', 'birthday']
         extra_kwargs = {'first_name': {'required': True}, 'last_name': {'required': True}}
 
     def validate(self, attrs):
@@ -66,5 +69,5 @@ class ProfileCreationSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])
         user.save()
-        UsersBio.objects.create(user_id=user.id) # "user_id" - description of relation between two tables
+        UsersBio.objects.create(user_id=user.id)  # "user_id" - description of relation between two tables
         return user
